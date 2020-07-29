@@ -1,0 +1,41 @@
+NA 0.1
+OBSCURATION 0.0
+RELATIVE_LEG_WIDTH 0
+
+
+WAVELENGTH 0.6292
+PIXELSIZE 6.5
+IMAGESIZE 512
+FRAMES 100
+
+
+min_MAG 8.1077575
+max_MAG 8.1892425
+step_MAG 0.01
+
+min_NA_ILL 0
+max_NA_ILL 0.09
+
+min_RI 1
+max_RI 1
+
+min_ILL_PHASE_OFF 0
+max_ILL_PHASE_OFF 2
+
+min_ILL_OFF 0
+max_ILL_OFF 2
+
+min_ADC 500
+max_ADC 3000
+step_ADC 100
+
+min_SNR 5
+max_SNR 20
+step_SNR 1
+
+min_BG 50
+max_BG 200
+step_BG 10
+
+min_OPD 1
+max_OPD 3
