@@ -24,7 +24,7 @@ reconstruction_params = {
     'denoise': False,  # Whether to use denoising used in the original paper during reconstruction. Usually doesn't work well as it is kinda ad hoc
     
     # Parameters from Aidukas et. al. paper
-    'adaptive_noise': 1,  
+    'adaptive_noise': 1,
     'adaptive_pupil': 1,
     'adaptive_img': 1,
     'alpha': 1,
