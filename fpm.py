@@ -10,9 +10,9 @@ from scipy import signal
 import scipy.io as io
 from scipy.signal import general_gaussian
 from psd import periodic_smooth_decomp as psd
-from utils import *
+from utils import *  #from eval_utils import *
 from fpm_utils import *
-from params import illumination_params, save_params, row, reconstruction_params
+
 
 models = {
     '64_raw': ('models/frcnn_64_raw', False),
@@ -83,13 +83,12 @@ def get_illumination(tiff_path, model='multisize_raw', window='tukey', a=0.3, p=
         a = min(imgs[0].shape[0], imgs[0].shape[1])
         slice_x, slice_y = slice(0, a), slice(0, a)
         imgs = [img[slice_x, slice_y] for img in imgs]
-
-    width, height = imgs[0].shape  # Images aren't supposed to have 3rd dimension
     
     # Apodization
-    if window.lower()=='gaussian':
-        w = np.outer(signal.general_gaussian(512, p=p, sig=sig), signal.general_gaussian(512, p=p, sig=sig))
-    elif window.lower()=='tukey':
+    width, height = imgs[0].shape  # Images aren't supposed to have 3rd dimension
+    if window is not None and window.lower()=='gaussian':
+        w = np.outer(signal.general_gaussian(width, p=p, sig=sig), signal.general_gaussian(width, p=p, sig=sig))
+    elif window is not None and window.lower()=='tukey':
         w = np.outer(signal.tukey(width, alpha=a), signal.tukey(height, alpha=a))
     elif window is None or window.lower() is 'none':
         w=1
@@ -129,7 +128,7 @@ def get_illumination(tiff_path, model='multisize_raw', window='tukey', a=0.3, p=
     
     except IndexError:
         print(
-            'The model did not return any detections.'\
+            '\n [!] The model did not return any detections.'\
             ' Check to make sure the arguments starting_angle and increase_angle are set correctly.'\
             'You can also try changing the model, changing windowing method, turn PSD on/off, set tol to None, etc. to see if it helps.'
          )
@@ -137,7 +136,7 @@ def get_illumination(tiff_path, model='multisize_raw', window='tukey', a=0.3, p=
         exit(0)
 
 
-def get_reconstruction(tiff_path, params):
+def get_reconstruction(tiff_path, discs, row, params):
     # Read the tiff file
     imgs = read_tiff(tiff_path)
 
@@ -147,14 +146,34 @@ def get_reconstruction(tiff_path, params):
         slice_x, slice_y = slice(0, a), slice(0, a)
         imgs = [img[slice_x, slice_y] for img in imgs]
     
+    window = params['window']
+    a, p, sig = params['a'], params['p'], params['sig']
+    do_psd = params['do_psd']
+    
+    # Apodization
+    width, height = imgs[0].shape  # Images aren't supposed to have 3rd dimension
+    if window is not None and window.lower()=='gaussian':
+        w = np.outer(signal.general_gaussian(width, p=p, sig=sig), signal.general_gaussian(width, p=p, sig=sig))
+    elif window is not None and window.lower()=='tukey':
+        w = np.outer(signal.tukey(width, alpha=a), signal.tukey(height, alpha=a))
+    elif window is None or window.lower() is 'none':
+        w=1
+
+    imgs = [w*img for img in tqdm(imgs, desc='Processing Apodization', leave=False)]
+    
+    # Periodic Smooth Decomposition
+    if do_psd:
+        imgs = [psd(img)[0] for img in tqdm(imgs, desc='Processing PSD', leave=False)]
+    
     imgs = [cp.array(img) for img in imgs]  # Transfer to GPU
 
     IMAGESIZE = imgs[0].shape[0]
     scale = params['scale']            
     hres_size = (IMAGESIZE * scale, IMAGESIZE * scale)
 
-    del params['scale']
-
+    # Remove keys not used by the reconstruction algo
+    prms = {k: params[k] for k in params.keys() - ['scale', 'do_psd', 'window', 'a', 'p', 'sig']}
+    
     # Reconstruction
     print('Performing Reconstruction...', end='')
     obj, pupil = reconstruct_v2(
@@ -162,13 +181,14 @@ def get_reconstruction(tiff_path, params):
         discs,
         row,
         hres_size,
-        **params
+        **prms
     )
     print('Done!')
+    
     return obj, pupil, imgs
 
         
-def save_illumination(discs, radii, params):
+def save_illumination(discs, radii, tiff_path, params):
     print('Saving illumination results...', end='')
     os.makedirs(params['illumination']['savedir'], exist_ok=True)
 
@@ -206,7 +226,7 @@ def save_illumination(discs, radii, params):
         print(f"{params['illumination']['format']} format not recognised. Only mat and npz are supported.")
 
 
-def save_reconstruction(obj, pupil, imgs, params):
+def save_reconstruction(obj, pupil, imgs, tiff_path, params):
     print('Saving reconstruction results...', end='')
 
     os.makedirs(params['reconstruction']['savedir'], exist_ok=True)
@@ -291,23 +311,26 @@ def unique_path(f):
 if __name__ == '__main__':
     from sys import argv
 
-    if len(argv) < 2:
+    if len(argv) < 3:
         print(
-            'Usage:\n\t python3 fpm.py /path/to/tiff/file \n'\
-            'Specify parameters in params.py.'
+            'Usage:\n\t python3 fpm.py /path/to/tiff/file /path/to/params/file \n'\
+            'Specify parameters in the params.py file.'
         )
         exit(0)
 
     tiff_path = argv[1]
+    params = argv[2].rstrip('.py')
+    
+    exec(f'from {params} import illumination_params, save_params, row, reconstruction_params')
 
     # Illumination Estimation
     discs, radii = get_illumination(tiff_path, **illumination_params)
 
     # Save Illumination Estimation Results
-    save_illumination(discs, radii, save_params)
+    save_illumination(discs, radii, tiff_path, save_params)
 
     # Reconstruction
-    obj, pupil, imgs = get_reconstruction(tiff_path, reconstruction_params)
+    obj, pupil, imgs = get_reconstruction(tiff_path, discs, row, reconstruction_params)
     
     # Save Reconstruction Results
-    save_reconstruction(obj, pupil, imgs, save_params)
+    save_reconstruction(obj, pupil, imgs, tiff_path, save_params)

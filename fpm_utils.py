@@ -3,7 +3,7 @@ import cupy as cp
 import matplotlib.pyplot as plt
 import cv2
 from tqdm.auto import tqdm
-from utils import read_tiff, FourierShift2D
+from utils import read_tiff, FourierShift2D  # from eval_utils import read_tiff, FourierShift2D
 
 plt.rcParams['image.cmap'] = 'Greys_r'
 F = lambda x: cp.fft.fftshift(cp.fft.fft2(cp.fft.ifftshift(x)))
