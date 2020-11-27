@@ -1,5 +1,5 @@
 # NN-Illumination-Estimation-FPM
-Accompanying code for the paper Neural Network for Illumination Angle Estimation in Fourier Ptychography
+Accompanying code for the paper "Object Detection Neural Network Improves Fourier Ptychographic Reconstruction" ([Paper](https://doi.org/10.1364/OE.409679)).
 
 
 ## Installation
