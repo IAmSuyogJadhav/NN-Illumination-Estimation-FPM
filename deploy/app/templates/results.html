@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+h4 {display: inline}
+h3 {display: inline}
+</style>
+
+<div class='w3-container'>
+    <center><h1 class="w3-jumbo w3-text-red"><b>{{heading}}.</b></h1></center>
+  <center><h3 class="w3-xlarge w3-text-black"> {{subtitle}} </h3></center><br />
+    <center><hr style="width:50;border:5px solid black" class="w3-round"></center>
+<br /><br />
+
+<h3 class="w3-xxlarge w3-text-red"><b>Downloads</b></h3><br />
+
+<form action="{{discs_path}}" method="get" target="_blank">
+         <button type="submit">Illumination Estimation Results</button>
+</form>
+
+<form action="{{amp}}" method="get" target="_blank">
+         <button type="submit">Reconstructed Image (Amplitude)</button>
+</form>
+
+<form action="{{phase}}" method="get" target="_blank">
+         <button type="submit">Reconstructed Image (Phase)</button>
+</form>
+
+<form action="{{p_amp}}" method="get" target="_blank">
+         <button type="submit">Reconstructed Pupil (Amplitude)</button>
+</form>
+
+<form action="{{p_phase}}" method="get" target="_blank">
+         <button type="submit">Reconstructed Pupil (Phase)</button>
+</form>
+
+<form action="{{mean}}" method="get" target="_blank">
+         <button type="submit">Mean Input Image</button>
+</form>
+
+<!-- <input type="button" value="Illumination Estimation Results" onclick="{{discs_path}}">
+<input type="button" value="Illumination Estimation Results" onclick="{{amp}}">
+<input type="button" value="Illumination Estimation Results" onclick="{{phase}}">
+<input type="button" value="Illumination Estimation Results" onclick="{{mean}}">
+<input type="button" value="Illumination Estimation Results" onclick="{{p_amp}}">
+<input type="button" value="Illumination Estimation Results" onclick="{{p_phase}}"> -->
+<br/ ><br/>
+
+
+
+<br /><br /><br />
+    <h2 class="w3-xxxlarge w3-text-red"><b>&lt; Go Back Home</b></h2>
+    <hr style="width:50px;border:5px solid black" class="w3-round">
+    <hr / >
+  </div>
+
+  </div>
+</div>
+{% endblock %}

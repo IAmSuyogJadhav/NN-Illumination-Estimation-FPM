@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+h4 {display: inline}
+h3 {display: inline}
+</style>
+
+<div class="w3-container">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Analysis UI</b></h1>
+    <h3 class="w3-xlarge w3-text-black">Here you can tune the settings for illumination estimation and reconstruction as per your liking. Recommended values are already selected for all the parameters. Note that you will HAVE to change the 'Starting Angle' and 'Increase Angle' settings accordingly unless the captured set starts with first frame having an illumination angle of 0 degrees (with +X axis) and it increases in clockwise direction as one progresses through the frames. <br /> Currently loaded file and models are displayed below. If you wish to change one of these, please go back to the homepage and start over.</h3><br /><br />
+
+  <h3 class="w3-xlarge w3-text-red">Working on: </h3><br /> {{file}}<br />
+  <h3 class="w3-xlarge w3-text-red">Loaded Model: </h3><br /> {{model}}<br /><br />
+  <!-- </div>
+
+<div class="w3-container"> -->
+  <form action="/predict", method="post">
+    <h3 class="w3-xxlarge w3-text-red"><b>Illumination Estimation Parameters</b></h3><br />(Most common parameters are already selected by default)<br/>
+
+<br />
+  <h4 class="w3-xlarge w3-text-black">Calibrate &nbsp;&nbsp;</h4>
+    <input type = "checkbox" name = "calibrate" checked/> &nbsp;&nbsp;(If unselected, the next three parameters are ignored)
+  <br />
+  <h4 class="w3-xlarge w3-text-black">Interpolate Estimations for Darkfield Frames &nbsp;&nbsp;</h4>
+    <input type = "checkbox" name = "fill_empty" checked/>
+  <br />
+
+    <h4 class="w3-xlarge w3-text-black">Starting Angle &nbsp;&nbsp;</h4>
+      <input type = "number" name = "starting_angle" value=0 step=1 min=0 max=360 required/> &nbsp;&nbsp;(with +X axis, between 0-360 degrees)
+<br />
+  <h4 class="w3-xlarge w3-text-black">Angle Increases with Frame Number &nbsp;&nbsp;</h4>
+    <input type = "checkbox" name = "increase_angle" checked/> &nbsp;&nbsp;(in +X direction)
+  <br />
+    <h4 class="w3-xlarge w3-text-black">Apodization &nbsp;&nbsp;</h4>
+    <select name="window" method="GET" action="/">
+        <option value="tukey" SELECTED>Tukey</option>
+        <option value="gaussian">Gaussian</option>
+        <option value="none">None</option>
+    </select>
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">Alpha &nbsp;&nbsp;</h4>
+      <input type = "number" name = "a" value=0.3 step=0.001 required/> &nbsp;&nbsp;(used in Tukey window, ignored otherwise)
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">P and Sigma &nbsp;&nbsp;</h4>
+      <input type = "number" name = "p" value=10 step=0.001 required/> &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type = "number" name = "sig" value=230 step=0.001 required/> &nbsp;&nbsp;(used in gaussian window, ignored otherwise)
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">Periodic Spectral Decomposition &nbsp;&nbsp;</h4>
+      <input type = "checkbox" name = "do_psd" checked/> &nbsp;&nbsp;(helps reduce boundary artefacts)
+    <br />
+    <br />
+
+
+
+
+
+
+
+
+
+
+
+    <h3 class="w3-xxlarge w3-text-red"><b>Reconstruction Parameters</b></h3><br />(Most common parameters are already selected by default)<br/>
+
+    <br />
+    <h4 class="w3-xlarge w3-text-black">Scale &nbsp;&nbsp;</h4>
+    <input type = "number" name = "scale" value=2 step=0.1 /> &nbsp;&nbsp;(scale by which to increase the image size)
+    <br />
+    <h4 class="w3-xlarge w3-text-black">Apodization &nbsp;&nbsp;</h4>
+    <select name="r_window" method="GET" action="/">
+        <option value="tukey">Tukey</option>
+        <option value="gaussian">Gaussian</option>
+        <option value="none" SELECTED>None</option>
+    </select>
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">Alpha &nbsp;&nbsp;</h4>
+      <input type = "number" name = "r_a" value=0.3 step=0.001 required/> &nbsp;&nbsp;(used in Tukey window, ignored otherwise)
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">P and Sigma &nbsp;&nbsp;</h4>
+      <input type = "number" name = "r_p" value=10 step=0.001 required/> &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type = "number" name = "r_sig" value=230 step=0.001 required/> &nbsp;&nbsp;(used in gaussian window, ignored otherwise)
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">Periodic Spectral Decomposition &nbsp;&nbsp;</h4>
+      <input type = "checkbox" name = "r_do_psd" /> &nbsp;&nbsp;(helps reduce boundary artefacts)
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">No. of iterations &nbsp;&nbsp;</h4>
+      <input type = "number" name = "n_iters" value=100 step=1 required/>
+    <br />
+    <br />
+    <h4 class="w3-xlarge w3-text-black"><b>Parameters from Aidukas et. al</b></h4><br />(For more details, refer to the <a href="http://europepmc.org/article/PMC/6520337" target="_blank">paper</a>)<br/>
+
+    <h4 class="w3-xlarge w3-text-black">adaptive_noise&nbsp;&nbsp;&nbsp;</h4>
+      <input type = "number" name = "adaptive_noise" value=1 step=0.001 required/>
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">adaptive_pupil&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+      <input type = "number" name = "adaptive_pupil" value=1 step=0.001 required/>
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">adaptive_img &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+      <input type = "number" name = "adaptive_img" value=1 step=0.001 required/>
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">alpha &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+      <input type = "number" name = "alpha" value=1 step=0.001 required/>
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">delta_img &nbsp;&nbsp;</h4>
+      <input type = "number" name = "delta_img" value=10 step=0.0001 required/>
+    <br />
+
+    <h4 class="w3-xlarge w3-text-black">delta_pupil&nbsp;</h4>
+      <input type = "number" name = "delta_pupil" value=0.0001 step=0.0001 required/>
+
+    <br />
+    <br />
+
+    <input type="submit" name="action" value="Go!" />
+
+  </form>
+
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="w3-container">
+    <h1 class="w3-xxxlarge w3-text-red"><b>{{heading}}</b></h1>
+  <h3 class="w3-xlarge w3-text-black"> {{subtitle}} </h3>
+  <!-- </div>
+
+<div class="w3-container"> -->
+  {% if files %}
+    <form action="/analyze", method="post">
+      <br /><h1 class="w3-xlarge w3-text-black">Select a file</h1>
+      <select name="files_dropdown" method="GET" action="/">
+        {% for file in files %}
+          <option value="{{file}}" SELECTED>{{file}}</option>
+        {% endfor %}
+      </select>
+
+      <h1 class="w3-xlarge w3-text-black">Select the model to use</h1>
+      <select name="models_dropdown" method="GET" action="/">
+        {% for model in models %}
+          <option value="{{model}}" SELECTED>{{model}}</option>
+        {% endfor %}
+      </select>
+
+      <br />
+      <br />
+      <input type="submit" name="action" value="Go!" />
+      <!-- <input type="submit" name="action" value="Estimate Illumination Only" />
+      <input type="submit" name="action" value="Estimate Illumination and Reconstruct" /> -->
+    </form>
+  {% else %}
+    <h1 class="w3-xxxlarge w3-text-red"><b>No files uploaded yet. Please upload one.</b></h1>
+  {% endif %}
+  <h3 class="w3-text-black">
+    <a href="{{ url_for('upload_file') }}" class="w3-margin-right" onclick="w3_open()">Upload new file.</a>
+  </h3>
+
+
+{% endblock %}
