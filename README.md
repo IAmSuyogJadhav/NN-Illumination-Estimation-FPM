@@ -40,5 +40,28 @@ pip install -r requirements-win.txt
 ```
 
 
-## Usage
-TBD
+## Webapp Usage
+1. If you have already cloned this repository using a git client or GitHub Desktop in previous steps, simply switch to the ```deploy``` branch and continue to the next step.
+
+```bash
+git checkout deploy
+```
+
+​	Otherwise, use the drop-down menu towards the top of this page to switch branches from ```master``` to ```deploy``` and download the zip file.
+
+​	In addition to the requirements stated earlier, you will need flask to run the app. Install flask:
+
+```bash
+pip install flask
+```
+
+
+
+2. You will need to have the trained models in order to use the app. The model files will go inside `app/static/models`.
+3. Start a bash/CMD/Powershell session inside the directory and run:
+
+```bash
+flask run
+```
+
+​	Open a new browser window and navigate to http://localhost:5000. Follow the On-screen instructions to navigate the interface.
