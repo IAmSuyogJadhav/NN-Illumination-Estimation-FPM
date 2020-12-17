@@ -3,7 +3,7 @@ import pandas as pd
 from app import app
 from flask import render_template, flash, redirect, url_for, request, send_from_directory
 from werkzeug.urls import url_parse
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 import pickle
 
 if not app.config['NO_MODEL']:
