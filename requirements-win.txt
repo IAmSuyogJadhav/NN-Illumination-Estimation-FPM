@@ -7,3 +7,4 @@ pandas>=1.0.1
 scikit_image>=0.16.2
 numpy>=1.18.1
 ipython>=7.16.1
+flask
