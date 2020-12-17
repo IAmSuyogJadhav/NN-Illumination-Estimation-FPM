@@ -38,7 +38,7 @@ class Config(object):
     PARAMS = None
 
     ILL_PARAMS = {
-        'model': 'multisize_raw',  # See the list in fpm.py
+#         'model': 'multisize_raw',  # See the list in fpm.py
         'window': 'tukey',  # ['tukey', 'gaussian', None]
         'a': 0.3,  # alpha, used for tukey window
         'p': 10,  # p and sigma used for

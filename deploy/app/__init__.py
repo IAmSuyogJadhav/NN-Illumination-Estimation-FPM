@@ -1,7 +1,8 @@
+import os
 from flask import Flask
 from config import Config
 
-app = Flask(__name__)
+app = Flask(__name__)  #, static_folder=os.path.abspath('./app/'))
 app.debug = True
 
 app.config.from_object(Config)

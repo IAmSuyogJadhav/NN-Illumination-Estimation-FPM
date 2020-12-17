@@ -102,7 +102,7 @@ def get_illumination(tiff_path, predictor, window='tukey', a=0.3, p=10, sig=230,
         w = np.outer(signal.general_gaussian(width, p=p, sig=sig), signal.general_gaussian(width, p=p, sig=sig))
     elif window is not None and window.lower()=='tukey':
         w = np.outer(signal.tukey(width, alpha=a), signal.tukey(height, alpha=a))
-    elif window is None or window.lower() is 'none':
+    else:
         w=1
 
     imgs = [w*img for img in tqdm(imgs, desc='Processing Apodization', leave=False)]
@@ -168,7 +168,7 @@ def get_reconstruction(tiff_path, discs, row, params):
         w = np.outer(signal.general_gaussian(width, p=p, sig=sig), signal.general_gaussian(width, p=p, sig=sig))
     elif window is not None and window.lower()=='tukey':
         w = np.outer(signal.tukey(width, alpha=a), signal.tukey(height, alpha=a))
-    elif window is None or window.lower() is 'none':
+    else:
         w=1
 
     imgs = [w*img for img in tqdm(imgs, desc='Processing Apodization', leave=False)]

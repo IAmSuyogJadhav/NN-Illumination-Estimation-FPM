@@ -706,7 +706,7 @@ def o_f4(imgs, hres_size, row=None, do_fil=False, show=False):
         fil = cp.array(cv2.circle(fil, (_orig, _orig), 2*CUTOFF_FREQ_px, 1, -1))
         f = f * fil
 
-    pad = (hres_size[0] - imgs[0].shape[0]) // 2
+    pad = int((hres_size[0] - imgs[0].shape[0]) // 2)
     f = cp.pad(f, [(pad, pad), (pad, pad)])
     
     if show:
