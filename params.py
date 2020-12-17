@@ -21,13 +21,13 @@ reconstruction_params = {
     'scale': 2,  # Scale by which to increase image size
     'window': None,  # ['tukey', 'gaussian', None]
     'a':0.3, # alpha, used for tukey window
-    'p':10,  # p and sigma used for 
+    'p':10,  # p and sigma used for
     'sig':230,  # gaussian window
     'do_psd': False,  # Whether to perform PSD on the FFT before reconstructing. Helps reduce boundary artifacts.
     'n_iters': 100,  # Iterations
     'do_fil': False,  # About initialization. If set to True, the initialization is filtered by multiplying with ideal aperture. Recommmended: False
     'denoise': False,  # Whether to use denoising used in the original paper during reconstruction. Usually doesn't work well as it is kinda ad hoc
-    
+
     # Parameters from Aidukas et. al. paper
     'adaptive_noise': 1,
     'adaptive_pupil': 1,
@@ -52,7 +52,7 @@ row = pd.DataFrame(  # Metadata
         'WAVELENGTH': [0.450],  # um
         'IMAGESIZE': [512],  # In case of non-square images, put lesser of the two dimensions here
         'MAGNIFICATION': [100],
-        
+
          # Not used for real-life data. Left here for compatibility with old code. Does not need to be changed
         'ILLUMINATION_OFFCENTER_X': [0],
         'ILLUMINATION_OFFCENTER_Y': [0],

@@ -28,9 +28,9 @@ class Config(object):
     EXPORT_FOLDER = './app/static/images/exported'
     EXPORT_FOLDER_REL = 'images/exported/'
     MAX_CONTENT_PATH = 5e6
-    NO_MODEL = True
+    NO_MODEL = False
 
-    DEBUG = True
+    DEBUG = False
     MODEL = None
     LOADED_MODEL = None
     WORKING_FILE = None
@@ -55,9 +55,9 @@ class Config(object):
     REC_PARAMS = {
         'scale': 2,  # Scale by which to increase image size
         'window': None,  # ['tukey', 'gaussian', None]
-        'a': 0.3, # alpha, used for tukey window
-        'p':10,  # p and sigma used for
-        'sig':230,  # gaussian window
+        'a': 0.3,  # alpha, used for tukey window
+        'p': 10,  # p and sigma used for
+        'sig': 230,  # gaussian window
         'do_psd': False,  # Whether to perform PSD on the FFT before reconstructing. Helps reduce boundary artifacts.
         'n_iters': 100,  # Iterations
         'do_fil': False,  # About initialization. If set to True, the initialization is filtered by multiplying with ideal aperture. Recommmended: False
