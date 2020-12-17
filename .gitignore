@@ -1,4 +1,9 @@
 # Large Folders
+images/
+params/
+models/
+illumination/
+reconstruction/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
