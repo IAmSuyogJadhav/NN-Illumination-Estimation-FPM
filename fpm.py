@@ -103,7 +103,8 @@ def get_illumination(tiff_path, model='multisize_raw', window='tukey', a=0.3, p=
     if (starting_angle == 0) and increase_angle:  # The default case
         idxs = None
     else:
-        thetas = list(np.arange(0, 360, 360/39))
+        # thetas = list(np.arange(0, 360, 360/39))
+        thetas = list(np.arange(0, 360, 360/len(imgs)))
         offset = int((starting_angle / 360) * len(imgs))  # Calculate offset index
         if increase_angle:  # If angle increasing in CW direction
             thetas_ = thetas[offset:] + thetas[:offset]
