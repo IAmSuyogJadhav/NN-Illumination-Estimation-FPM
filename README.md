@@ -46,3 +46,5 @@ pip install -r requirements-win.txt
 2. Download the pre-trained models from [Dataverse](https://doi.org/10.18710/BBU6JD). Download and extract them in the root directory of the repository. Now you should have a folder named `models` in the root directory containing the pre-trained models.
 
 3. A sample inference code is provided in [`Example.ipynb`](Example.ipynb). You can run it using Jupyter Notebook or Google Colab. The notebook is well commented and should be easy to follow. You can also change the parameters in the notebook to see how they affect the results.
+
+4. A sample input image is provided in the [`tiffs`](tiffs) folder. You can use it to test the code. You can also use your own test images, as long as they are in the multipage tiff format similar to the sample image.
