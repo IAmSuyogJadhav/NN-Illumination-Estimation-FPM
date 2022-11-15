@@ -41,8 +41,8 @@ pip install -r requirements-win.txt
 
 
 ## Usage
-1. Clone this repository using git or download the zip file and extract it using the green button on the top right corner.
+1. Clone the GitHub repository using git or download the [zip file](https://github.com/IAmSuyogJadhav/NN-Illumination-Estimation-FPM/archive/refs/heads/master.zip) directly and extract it.
 
-2. The pre-trained models are being made available on Dataverse at this [link](https://doi.org/10.18710/BBU6JD). Download and extract them in the root directory of the repository. Now you should have a folder named `models` in the root directory containing the pre-trained models.
+2. Download the pre-trained models from [link](https://doi.org/10.18710/BBU6JD). Download and extract them in the root directory of the repository. Now you should have a folder named `models` in the root directory containing the pre-trained models.
 
 3. A sample inference code is provided in [`Example.ipynb`](Example.ipynb). You can run it using Jupyter Notebook or Google Colab. The notebook is well commented and should be easy to follow. You can also change the parameters in the notebook to see how they affect the results.
